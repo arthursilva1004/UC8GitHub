@@ -13,7 +13,7 @@ class FormExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Localizador')),
+        appBar: AppBar(title: Text('Localizador')),
         body: const FormExample(),
       ),
     );
@@ -35,12 +35,12 @@ class _FormExampleState extends State<FormExample> {
       TextEditingController();
   LatLng? _coordinatesSaida;
   LatLng? _coordinatesChegada;
+  List<LatLng> _routePoints = [];
 
   Future<void> _searchLocation() async {
     final querySaida = _locationSaidaController.text;
     final queryChegada = _locationChegadaController.text;
-    if (querySaida.isEmpty) return;
-    if (queryChegada.isEmpty) return;
+    if (querySaida.isEmpty || queryChegada.isEmpty) return;
 
     final urlSaida = Uri.parse(
         'https://nominatim.openstreetmap.org/search?format=json&q=$querySaida');
@@ -69,7 +69,25 @@ class _FormExampleState extends State<FormExample> {
         setState(() {
           _coordinatesChegada = LatLng(lat, lon);
         });
+        _getRoute(_coordinatesSaida!, _coordinatesChegada!);
       }
+    }
+  }
+
+  Future<void> _getRoute(LatLng start, LatLng end) async {
+    final url = Uri.parse(
+        'https://router.project-osrm.org/route/v1/driving/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final routeGeometry = data['routes'][0]['geometry']['coordinates'];
+      List<LatLng> points = routeGeometry
+          .map<LatLng>((coord) => LatLng(coord[1], coord[0]))
+          .toList();
+      setState(() {
+        _routePoints = points;
+      });
     }
   }
 
@@ -123,14 +141,15 @@ class _FormExampleState extends State<FormExample> {
         Expanded(
           child: FlutterMap(
             options: MapOptions(
-                initialCenter:
-                    (_coordinatesSaida != null && _coordinatesChegada != null)
-                        ? LatLng(0, 0)
-                        : LatLng(0, 0),
-                initialZoom:
-                    (_coordinatesSaida != null && _coordinatesChegada != null)
-                        ? 15.0
-                        : 2.0),
+                initialCenter: (_coordinatesSaida != null && _coordinatesChegada != null)
+                    ? LatLng(
+                        (_coordinatesSaida!.latitude + _coordinatesChegada!.latitude) / 2,
+                        (_coordinatesSaida!.longitude + _coordinatesChegada!.longitude) / 2,
+                      )
+                    : LatLng(0, 0),
+                initialZoom: (_coordinatesSaida != null && _coordinatesChegada != null)
+                    ? 15.0
+                    : 2.0),
             children: [
               TileLayer(
                 urlTemplate:
@@ -146,7 +165,7 @@ class _FormExampleState extends State<FormExample> {
                       height: 40.0,
                       child: const Icon(
                         Icons.adjust_sharp,
-                        color: Colors.red,
+                        color: Colors.blue,
                         size: 20.0,
                       ),
                     ),
@@ -166,7 +185,17 @@ class _FormExampleState extends State<FormExample> {
                       ),
                     ),
                   ],
-                )
+                ),
+              if (_routePoints.isNotEmpty)
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: _routePoints,
+                      strokeWidth: 4.0,
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

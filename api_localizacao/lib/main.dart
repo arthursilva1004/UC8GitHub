@@ -123,7 +123,10 @@ class _FormExampleState extends State<FormExample> {
         Expanded(
           child: FlutterMap(
             options: MapOptions(
-                initialCenter: _coordinatesSaida ?? LatLng(0, 0),
+                initialCenter:
+                    (_coordinatesSaida != null && _coordinatesChegada != null)
+                        ? LatLng(0, 0)
+                        : LatLng(0, 0),
                 initialZoom:
                     (_coordinatesSaida != null && _coordinatesChegada != null)
                         ? 15.0
@@ -135,21 +138,35 @@ class _FormExampleState extends State<FormExample> {
                 subdomains: ['a', 'b', 'c'],
               ),
               if (_coordinatesSaida != null)
-                if (_coordinatesChegada != null)
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        point: _coordinatesSaida!,
-                        width: 80.0,
-                        height: 80.0,
-                        child: const Icon(
-                          Icons.location_pin,
-                          color: Colors.red,
-                          size: 40.0,
-                        ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _coordinatesSaida!,
+                      width: 40.0,
+                      height: 40.0,
+                      child: const Icon(
+                        Icons.adjust_sharp,
+                        color: Colors.red,
+                        size: 20.0,
                       ),
-                    ],
-                  )
+                    ),
+                  ],
+                ),
+              if (_coordinatesChegada != null)
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _coordinatesChegada!,
+                      width: 80.0,
+                      height: 80.0,
+                      child: const Icon(
+                        Icons.location_on_outlined,
+                        color: Colors.black,
+                        size: 40.0,
+                      ),
+                    ),
+                  ],
+                )
             ],
           ),
         ),

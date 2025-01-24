@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flappy_bird_game/components/background.dart';
 import 'package:flappy_bird_game/components/bird.dart';
 import 'package:flappy_bird_game/components/ground.dart';
-import 'package:flappy_bird_game/components/pipe_group.dart';
+import 'package:flappy_bird_game/components/pipe_ground.dart';
 import 'package:flappy_bird_game/game/configuration.dart';
 import 'package:flutter/painting.dart';
 

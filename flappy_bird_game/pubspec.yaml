@@ -28,8 +28,21 @@ flutter:
 
 
   assets:
-    - assets/images/
-    - assets/audio/
+    - assets/images/background.png
+    - assets/images/bird_downflap.png
+    - assets/images/bird_midflap.png
+    - assets/images/bird_upflap.png
+    - assets/images/clouds.png
+    - assets/images/gameover.png
+    - assets/images/ground.png
+    - assets/images/menu.jpg
+    - assets/images/message.png
+    - assets/images/pipe_rotated.png
+    - assets/images/pipe.png
+    
+    - assets/audio/collision.wav
+    - assets/audio/fly.wav
+    - assets/audio/point.wav
 
   fonts:
     - family: Game     

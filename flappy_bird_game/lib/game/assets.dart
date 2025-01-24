@@ -12,4 +12,8 @@ class Assets {
   static const gameOver = 'assets/images/gameover.png';
   static const menu = 'assets/images/menu.png';
   static const message = 'assets/images/message.png';
+
+  static const flying = 'assets/audio/fly.wav';
+  static const collision = 'assets/audio/collision.wav';
+  static const point = 'assets/audio/point.wav';
 }

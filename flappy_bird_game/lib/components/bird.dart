@@ -16,34 +16,39 @@ class Bird extends SpriteGroupComponent<BirdMovement>
 
   @override
   Future<void> onLoad() async {
+
     final birdMidFlap = await gameRef.loadSprite(Assets.birdMidFlap);
     final birdUpFlap = await gameRef.loadSprite(Assets.birdUpFlap);
     final birdDownFlap = await gameRef.loadSprite(Assets.birdDownFlap);
 
-    gameRef.bird;
-
-    size = Vector2(50, 40);
-    position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
-    current = BirdMovement.middle;
     sprites = {
       BirdMovement.middle: birdMidFlap,
       BirdMovement.up: birdUpFlap,
       BirdMovement.down: birdDownFlap,
     };
 
+    current = BirdMovement.middle;
+
+    size = Vector2(50, 40);
+    position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
+
     add(CircleHitbox());
+
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     position.y += Config.birdVelocity * dt;
+
     if (position.y < 1) {
       gameOver();
     }
   }
 
   void fly() {
+    if (gameRef.isHit) return;
+
     add(
       MoveByEffect(
         Vector2(0, Config.gravity),
@@ -51,29 +56,32 @@ class Bird extends SpriteGroupComponent<BirdMovement>
         onComplete: () => current = BirdMovement.down,
       ),
     );
+
     FlameAudio.play(Assets.flying);
     current = BirdMovement.up;
   }
 
   @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-
     gameOver();
   }
 
   void reset() {
+    debugPrint("🔄 Resetando pássaro...");
     position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
     score = 0;
+    current = BirdMovement.middle;
   }
 
   void gameOver() {
+    if (gameRef.isHit) return;
+
     FlameAudio.play(Assets.collision);
-    game.isHit = true;
+    gameRef.isHit = true;
     gameRef.overlays.add('gameOver');
     gameRef.pauseEngine();
+
+    debugPrint("💀 Game Over!");
   }
 }

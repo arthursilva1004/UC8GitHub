@@ -93,12 +93,12 @@ class _TarefasScreenState extends State<TarefasScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Excluir Lista"),
-          content: Text("Tem certeza que deseja excluir esta lista?"),
+          title: const Text("Excluir Lista"),
+          content: const Text("Tem certeza que deseja excluir esta lista?"),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Cancelar"),
+              child: const Text("Cancelar"),
             ),
             TextButton(
               onPressed: () {
@@ -106,7 +106,7 @@ class _TarefasScreenState extends State<TarefasScreen> {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-              child: Text("Excluir", style: TextStyle(color: Colors.red)),
+              child: const Text("Excluir", style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -119,10 +119,10 @@ class _TarefasScreenState extends State<TarefasScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.nomeLista),
-        backgroundColor: Color.fromARGB(255, 107, 188, 255),
+        backgroundColor: const Color.fromARGB(255, 107, 188, 255),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: _confirmarExclusao,
           ),
         ],
@@ -133,20 +133,20 @@ class _TarefasScreenState extends State<TarefasScreen> {
           children: [
             TextField(
               controller: _tarefaController,
-              decoration: InputDecoration(labelText: "Nome da Tarefa"),
+              decoration: const InputDecoration(labelText: "Nome da Tarefa"),
             ),
             TextField(
               controller: _descricaoController,
-              decoration: InputDecoration(labelText: "Descrição"),
+              decoration: const InputDecoration(labelText: "Descrição"),
             ),
             TextField(
               controller: _horarioController,
-              decoration: InputDecoration(labelText: "Horário"),
+              decoration: const InputDecoration(labelText: "Horário"),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _adicionarTarefa,
-              child: Text("Adicionar Tarefa"),
+              child: const Text("Adicionar Tarefa"),
             ),
             Expanded(
               child: ListView.builder(
@@ -172,7 +172,7 @@ class _TarefasScreenState extends State<TarefasScreen> {
                         }),
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () => _removerTarefa(index),
                       ),
                     ),
@@ -180,10 +180,10 @@ class _TarefasScreenState extends State<TarefasScreen> {
                 },
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _salvarLista,
-              child: Text("Salvar Lista"),
+              child: const Text("Salvar Lista"),
             ),
           ],
         ),

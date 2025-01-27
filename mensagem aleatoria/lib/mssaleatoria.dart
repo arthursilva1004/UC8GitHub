@@ -33,13 +33,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Frase Aleatória'),
+        title: const Text('Frase Aleatória'),
         backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.all(16),
-          margin: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(16),
           child: Column(
             children: [
               Image.asset(
@@ -49,20 +49,20 @@ class _HomeState extends State<Home> {
                 width: 250,
               ),
               Padding(
-                padding: EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 40),
                 child: Text(
                   _message,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontFamily: 'Roboto',
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 40),
                 child: ElevatedButton(
                   onPressed: () => _generateText(),
-                  child: Text(
+                  child: const Text(
                     "Nova Frase",
                     style: TextStyle(
                       fontSize: 25,

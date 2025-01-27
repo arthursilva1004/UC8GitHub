@@ -8,6 +8,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,13 +21,15 @@ class MyApp extends StatelessWidget {
 }
 
 class ListaDeTarefasScreen extends StatefulWidget {
+  const ListaDeTarefasScreen({super.key});
+
   @override
   _ListaDeTarefasScreenState createState() => _ListaDeTarefasScreenState();
 }
 
 class _ListaDeTarefasScreenState extends State<ListaDeTarefasScreen> {
   List<Map<String, dynamic>> _listasDeTarefas = [];
-  TextEditingController _nomeListaController = TextEditingController();
+  final TextEditingController _nomeListaController = TextEditingController();
 
   @override
   void initState() {
@@ -51,7 +55,7 @@ class _ListaDeTarefasScreenState extends State<ListaDeTarefasScreen> {
   void _adicionarLista() {
     if (_nomeListaController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Digite um nome para a lista!")),
+        const SnackBar(content: Text("Digite um nome para a lista!")),
       );
       return;
     }
@@ -95,22 +99,22 @@ class _ListaDeTarefasScreenState extends State<ListaDeTarefasScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Sistema de Agenda")),
+      appBar: AppBar(title: const Text("Sistema de Agenda")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _nomeListaController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Nome da Lista",
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _adicionarLista,
-              child: Text("Adicionar Lista"),
+              child: const Text("Adicionar Lista"),
             ),
             Expanded(
               child: ListView.builder(
@@ -121,7 +125,7 @@ class _ListaDeTarefasScreenState extends State<ListaDeTarefasScreen> {
                       title: Text(_listasDeTarefas[index]["nome"]),
                       onTap: () => _editarLista(index),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () => _excluirLista(index),
                       ),
                     ),

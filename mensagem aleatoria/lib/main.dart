@@ -6,13 +6,15 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Frases Aleatórias',
       home: Scaffold(
-        appBar: AppBar(title: Text("Input em Variável")),
+        appBar: AppBar(title: const Text("Input em Variável")),
         body: InputExample(),
       ),
     );
@@ -20,12 +22,14 @@ class MyApp extends StatelessWidget {
 }
 
 class InputExample extends StatefulWidget {
+  const InputExample({super.key});
+
   @override
   _InputExampleState createState() => _InputExampleState();
 }
 
 class _InputExampleState extends State<InputExample> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   String nome = "";
 
   @override
@@ -36,12 +40,12 @@ class _InputExampleState extends State<InputExample> {
         children: [
           TextField(
             controller: _controller,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Digite seu nome",
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               setState(() {
@@ -51,12 +55,12 @@ class _InputExampleState extends State<InputExample> {
                 MaterialPageRoute(builder: (context) => Home(nome: nome)),
               );
             },
-            child: Text("Salvar"),
+            child: const Text("Salvar"),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             "Texto digitado: $nome",
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
         ],
       ),

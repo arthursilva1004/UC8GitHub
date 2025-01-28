@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Frases Aleatórias',
+      title: 'Pokedex',
       home: Scaffold(),
     );
   }
@@ -38,7 +38,7 @@ class _InputExampleState extends State<InputExample> {
           TextField(
             controller: _controller,
             decoration: const InputDecoration(
-              labelText: "Digite seu nome",
+              labelText: "Digite o nome do Pokemon",
               border: OutlineInputBorder(),
             ),
           ),

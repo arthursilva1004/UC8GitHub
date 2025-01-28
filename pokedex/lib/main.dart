@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pokedex',
-      home: Scaffold(),
+      home: const InputExample(), // Agora inicia na tela correta
     );
   }
 }
@@ -27,39 +27,38 @@ class InputExample extends StatefulWidget {
 
 class _InputExampleState extends State<InputExample> {
   final TextEditingController _controller = TextEditingController();
-  String pokemon = "";
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              labelText: "Digite o nome do Pokemon",
-              border: OutlineInputBorder(),
+    return Scaffold(
+      appBar: AppBar(title: const Text("Pokedex"), backgroundColor: Colors.redAccent),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: "Digite o nome do Pokémon",
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                pokemon = _controller.text;
-              });
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Home(pokemon: pokemon)),
-              );
-            },
-            child: const Text("Salvar"),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "Texto digitado: $pokemon",
-            style: const TextStyle(fontSize: 18),
-          ),
-        ],
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                if (_controller.text.isNotEmpty) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Home(pokemon: _controller.text),
+                    ),
+                  );
+                }
+              },
+              child: const Text("Buscar"),
+            ),
+          ],
+        ),
       ),
     );
   }

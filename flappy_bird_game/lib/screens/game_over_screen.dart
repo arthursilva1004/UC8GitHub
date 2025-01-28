@@ -9,16 +9,24 @@ class GameOverScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-        color: Colors.black38,
+        color: Colors.black45,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Score: ${game.bird.score}',
+                'Sua pontuação foi: ${game.bird.score}',
                 style: const TextStyle(
                   fontSize: 60,
-                  color: Colors.white,
+                  color: Colors.blue,
+                  fontFamily: 'Game',
+                ),
+              ),
+              Text(
+                'Seu recorde é: ${game.bird.record}',
+                style: const TextStyle(
+                  fontSize: 60,
+                  color: Colors.black,
                   fontFamily: 'Game',
                 ),
               ),
@@ -33,6 +41,15 @@ class GameOverScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: onMenu,
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                child: const Text(
+                  'Retornar ao Menu Principal',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
             ],
           ),
         ),
@@ -42,5 +59,12 @@ class GameOverScreen extends StatelessWidget {
     game.bird.reset();
     game.overlays.remove('gameOver');
     game.resumeEngine();
+  }
+
+  void onMenu() {
+    game.bird.reset();
+    game.resumeEngine();
+    game.overlays.remove('gameOver');
+    game.overlays.add('mainMenu');
   }
 }

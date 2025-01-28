@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class MainMenuScreen extends StatelessWidget {
   final FlappyBirdGame game;
+
   static const String id = 'mainMenu';
 
   const MainMenuScreen({
@@ -21,16 +22,18 @@ class MainMenuScreen extends StatelessWidget {
           game.overlays.remove('mainMenu');
           game.resumeEngine();
         },
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(Assets.menu),
-              fit: BoxFit.cover,
+        child: Center(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Assets.menu),
+                fit: BoxFit.cover,
+              ),
             ),
+            child: Image.asset(Assets.message),
           ),
-          child: Image.asset(Assets.message),
         ),
       ),
     );

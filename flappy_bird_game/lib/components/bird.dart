@@ -13,6 +13,7 @@ class Bird extends SpriteGroupComponent<BirdMovement>
   Bird();
 
   int score = 0;
+  int record = 0;
 
   @override
   Future<void> onLoad() async {
@@ -28,7 +29,7 @@ class Bird extends SpriteGroupComponent<BirdMovement>
 
     current = BirdMovement.middle;
 
-    size = Vector2(50, 40);
+    size = Vector2(60, 50);
     position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
 
     add(CircleHitbox());
@@ -67,10 +68,12 @@ class Bird extends SpriteGroupComponent<BirdMovement>
   }
 
   void reset() {
-    debugPrint("🔄 Resetando pássaro...");
     position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
     score = 0;
     current = BirdMovement.middle;
+    if (score > record) {
+      record = score;
+    }
   }
 
   void gameOver() {

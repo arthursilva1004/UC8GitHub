@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pokedex',
-      home: const InputExample(), // Agora inicia na tela correta
+      home: const InputExample(),
     );
   }
 }
@@ -31,7 +31,10 @@ class _InputExampleState extends State<InputExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Pokedex"), backgroundColor: Colors.redAccent),
+      backgroundColor: Colors.white12,
+      appBar: AppBar(
+          title: const Text("Pokedex"),
+          backgroundColor: Color.fromARGB(227, 227, 53, 13)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -40,8 +43,9 @@ class _InputExampleState extends State<InputExample> {
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
-                labelText: "Digite o nome do Pokémon",
+                labelText: "Digite o nome do Pokemon",
                 border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search_outlined),
               ),
             ),
             const SizedBox(height: 16),
@@ -55,7 +59,8 @@ class _InputExampleState extends State<InputExample> {
                   );
                 }
               },
-              child: const Text("Buscar"),
+              child: Icon(Icons.search_outlined,
+                  color: Color.fromARGB(255, 248, 56, 43), size: 30),
             ),
           ],
         ),

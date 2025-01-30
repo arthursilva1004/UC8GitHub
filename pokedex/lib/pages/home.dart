@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pokedex/database.dart';
 import 'dart:convert';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Pokemon {
   final int id;
@@ -30,8 +29,8 @@ class Pokemon {
       'altura': altura,
       'peso': peso,
       'tipo': tipo,
-      'habilidades': jsonEncode(habilidades.join(', ')),
-      'estatisticas_basicas': jsonEncode(estatisticas).toString(),
+      'habilidades': habilidades.join(','), // Converte a lista em uma string separada por vírgulas
+      'estatisticas_basicas': jsonEncode(estatisticas), // Converte o mapa em JSON
     };
   }
 }
@@ -47,78 +46,45 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isFavorited = false;
-  Database? _database;
   Map<String, dynamic>? pokemonData;
   bool isLoading = true;
   bool hasError = false;
 
+  final DatabaseHelper _dbHelper = DatabaseHelper(); // Instância do DatabaseHelper
+
   @override
   void initState() {
     super.initState();
-    _initDatabase();
     fetchPokemonData();
   }
 
-  Future<void> _initDatabase() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    _database = await openDatabase(
-      join(await getDatabasesPath(), 'pokemonsFav.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          'CREATE TABLE pokemonsFavoritos(id INTEGER PRIMARY KEY, nome TEXT, altura REAL, peso REAL, tipo TEXT, habilidades TEXT, estatisticas_basicas TEXT)',
-        );
-      },
-      version: 1,
-    );
-  }
-
-  Future<void> insertPokemon(Pokemon pokemon) async {
+  Future<void> _checkIfFavorited() async {
     try {
-      final db = _database;
-      if (db != null) {
-        await db.insert(
-          'pokemonsFavoritos',
-          pokemon.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
+      if (pokemonData != null) {
+        final favorites = await _dbHelper.getFavoritePokemons();
+        final isFavorite = favorites.any((favorite) => favorite['nome'] == pokemonData!['name']);
+        if (isFavorite) {
+          setState(() {
+            isFavorited = true;
+          });
+        }
       }
-      print('Pokemon inserido: ${pokemon.nome}');
     } catch (e) {
-      print('Erro ao inserir Pokemon: $e');
+      print('Erro ao verificar favoritos: $e');
     }
   }
 
-  Future<void> deletePokemon(int id) async {
-    try {
-      final db = _database;
-      if (db != null) {
-        await db.delete(
-          'pokemonsFavoritos',
-          where: 'id = ?',
-          whereArgs: [id],
-        );
-      }
-      print('Pokemon deletado: $id');
-    } catch (e) {
-      print('Erro ao deletar Pokemon: $e');
-    }
-  }
-
-  void toggleFavorite() async {
-    setState(() {
-      isFavorited = !isFavorited;
-    });
-
+  Future<void> toggleFavorite() async {
     if (pokemonData != null) {
       var poke = Pokemon(
         id: pokemonData!['id'],
         nome: pokemonData!['name'],
         altura: pokemonData!['height'] / 10,
         peso: pokemonData!['weight'] / 10,
-        tipo: pokemonData!['types']
+        tipo: (pokemonData!['types'] as List)
             .map<String>((t) => t['type']['name'].toString())
             .join(', '),
-        habilidades: pokemonData!['abilities']
+        habilidades: (pokemonData!['abilities'] as List)
             .map<String>((a) => a['ability']['name'].toString())
             .toList(),
         estatisticas: {
@@ -126,11 +92,34 @@ class _HomeState extends State<Home> {
         },
       );
 
-      if (isFavorited) {
-        await insertPokemon(poke);
+      if (!isFavorited) {
+        final count = await _dbHelper.countFavorites();
+        if (count >= 6) {
+          if (mounted) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text("Limite atingido"),
+                content: const Text("Você já tem 6 favoritos. Remova um antes de adicionar outro."),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("OK"),
+                  ),
+                ],
+              ),
+            );
+          }
+          return;
+        }
+        await _dbHelper.insertPokemon(poke.toMap());
       } else {
-        await deletePokemon(poke.id);
+        await _dbHelper.deletePokemon(poke.id);
       }
+
+      setState(() {
+        isFavorited = !isFavorited;
+      });
     }
   }
 
@@ -151,6 +140,7 @@ class _HomeState extends State<Home> {
           pokemonData = json.decode(response.body);
           isLoading = false;
         });
+        _checkIfFavorited(); // Verifica se o Pokémon já é favorito
       } else {
         setState(() {
           hasError = true;

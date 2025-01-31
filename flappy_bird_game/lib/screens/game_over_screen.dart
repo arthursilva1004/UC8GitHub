@@ -41,7 +41,7 @@ class GameOverScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: onMenu,
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),

@@ -33,18 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white12,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Pokedex"),
+        title: const Text(
+          "Pokedex",
+          style: TextStyle(fontFamily: 'Game'),
+        ),
         backgroundColor: Colors.red,
         actions: [
           IconButton(
-            icon: const Icon(Icons.star_outlined),
+            icon: const Icon(Icons.favorite_outlined),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const FavoritesScreen()),
+                  builder: (context) => const FavoritesScreen(),
+                ),
               );
             },
           ),
@@ -74,8 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
               },
-              child: const Icon(Icons.search_outlined,
-                  color: Colors.white, size: 30),
+              child: const Icon(
+                Icons.search_outlined,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
           ],
         ),
@@ -98,7 +105,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Favoritos"),
+        title: const Text(
+          "Favoritos",
+          style: TextStyle(fontFamily: 'Game'),
+        ),
         backgroundColor: Colors.red,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -132,24 +142,24 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Column(
                         children: [
                           Image.network(
                             'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon['id']}.png',
-                            width: 100,
-                            height: 100,
+                            width: 150,
+                            height: 150,
                           ),
                           const SizedBox(width: 16),
-                          Text(
-                            pokemon['nome'],
-                            style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Game'),
-                          ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      Text(
+                        pokemon['nome'],
+                        style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Game'),
+                      ),
+                      const SizedBox(height: 8),
                       Text(
                         "ID: ${pokemon['id']}",
                         style: const TextStyle(
@@ -157,6 +167,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      const SizedBox(height: 8),
                       Text(
                         "Tipo: ${pokemon['tipo']}",
                         style: const TextStyle(
@@ -172,7 +183,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
                       const Text(
                         "Estatísticas:",
                         style: TextStyle(

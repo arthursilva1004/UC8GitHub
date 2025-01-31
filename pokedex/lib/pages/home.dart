@@ -160,7 +160,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white12,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.pokemon.toLowerCase()),
         backgroundColor: Colors.red,
@@ -193,7 +193,7 @@ class _HomeState extends State<Home> {
                           height: 300,
                           fit: BoxFit.cover,
                         ),
-                        Text("${pokemonData!['name']}",
+                        Text("Nome: ${pokemonData!['name']}",
                             style: const TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
@@ -221,8 +221,10 @@ class _HomeState extends State<Home> {
                             backgroundColor: Colors.black,
                           ),
                           child: Icon(
-                            isFavorited ? Icons.star : Icons.star_border,
-                            color: Colors.yellow,
+                            isFavorited
+                                ? Icons.favorite_outlined
+                                : Icons.favorite_outline_sharp,
+                            color: Colors.red,
                           ),
                         ),
                         const SizedBox(height: 10),

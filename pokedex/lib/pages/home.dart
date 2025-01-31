@@ -29,8 +29,8 @@ class Pokemon {
       'altura': altura,
       'peso': peso,
       'tipo': tipo,
-      'habilidades': habilidades.join(','), // Converte a lista em uma string separada por vírgulas
-      'estatisticas_basicas': jsonEncode(estatisticas), // Converte o mapa em JSON
+      'habilidades': habilidades.join(','),
+      'estatisticas_basicas': jsonEncode(estatisticas),
     };
   }
 }
@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
   bool isLoading = true;
   bool hasError = false;
 
-  final DatabaseHelper _dbHelper = DatabaseHelper(); // Instância do DatabaseHelper
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   void initState() {
@@ -62,7 +62,8 @@ class _HomeState extends State<Home> {
     try {
       if (pokemonData != null) {
         final favorites = await _dbHelper.getFavoritePokemons();
-        final isFavorite = favorites.any((favorite) => favorite['nome'] == pokemonData!['name']);
+        final isFavorite = favorites
+            .any((favorite) => favorite['nome'] == pokemonData!['name']);
         if (isFavorite) {
           setState(() {
             isFavorited = true;
@@ -100,7 +101,8 @@ class _HomeState extends State<Home> {
               context: context,
               builder: (context) => AlertDialog(
                 title: const Text("Limite atingido"),
-                content: const Text("Você já tem 6 favoritos. Remova um antes de adicionar outro."),
+                content: const Text(
+                    "Você já tem 6 favoritos. Remova um antes de adicionar outro."),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
@@ -140,7 +142,7 @@ class _HomeState extends State<Home> {
           pokemonData = json.decode(response.body);
           isLoading = false;
         });
-        _checkIfFavorited(); // Verifica se o Pokémon já é favorito
+        _checkIfFavorited();
       } else {
         setState(() {
           hasError = true;
@@ -196,15 +198,23 @@ class _HomeState extends State<Home> {
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Game')),
-                        Text("ID: ${pokemonData!['id']}"),
-                        Text("Altura: ${pokemonData!['height'] / 10} m"),
-                        Text("Peso: ${pokemonData!['weight'] / 10} kg"),
                         Text(
-                            "Tipo: ${pokemonData!['types'].map((t) => t['type']['name']).join(', ')}"),
+                          "ID: ${pokemonData!['id']}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text("Altura: ${pokemonData!['height'] / 10} m",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text("Peso: ${pokemonData!['weight'] / 10} kg",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         Text(
-                            "Habilidades: ${pokemonData!['abilities'].map((a) => a['ability']['name']).join(', ')}"),
+                            "Tipo: ${pokemonData!['types'].map((t) => t['type']['name']).join(', ')}",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         Text(
-                            "Estatísticas: ${pokemonData!['stats'].map((s) => '${s['stat']['name']}: ${s['base_stat']}').join(', ')}"),
+                            "Habilidades: ${pokemonData!['abilities'].map((a) => a['ability']['name']).join(', ')}",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                            "Estatísticas: ${pokemonData!['stats'].map((s) => '${s['stat']['name']}: ${s['base_stat']}').join(', ')}",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         ElevatedButton(
                           onPressed: toggleFavorite,
                           style: ElevatedButton.styleFrom(

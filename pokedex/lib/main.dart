@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/database.dart';
 import 'package:pokedex/pages/home.dart';
-import 'database.dart'; 
 import 'dart:convert';
 
 void main() {
@@ -39,11 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.red,
         actions: [
           IconButton(
-            icon: const Icon(Icons.star),
+            icon: const Icon(Icons.star_outlined),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FavoritesScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const FavoritesScreen()),
               );
             },
           ),
@@ -73,7 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
               },
-              child: const Icon(Icons.search_outlined, color: Colors.white, size: 30),
+              child: const Icon(Icons.search_outlined,
+                  color: Colors.white, size: 30),
             ),
           ],
         ),
@@ -114,7 +116,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               Map<String, dynamic> estatisticas = <String, dynamic>{};
               try {
                 if (pokemon['estatisticas_basicas'] != null) {
-                  estatisticas = jsonDecode(pokemon['estatisticas_basicas']) as Map<String, dynamic>;
+                  estatisticas = jsonDecode(pokemon['estatisticas_basicas'])
+                      as Map<String, dynamic>;
                 }
               } catch (e) {
                 print('Erro ao decodificar estatísticas: $e');
@@ -133,34 +136,43 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         children: [
                           Image.network(
                             'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon['id']}.png',
-                            width: 80,
-                            height: 80,
+                            width: 100,
+                            height: 100,
                           ),
                           const SizedBox(width: 16),
                           Text(
                             pokemon['nome'],
                             style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Game'
-                            ),
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Game'),
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
-                      // Tipo
+                      Text(
+                        "ID: ${pokemon['id']}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Text(
                         "Tipo: ${pokemon['tipo']}",
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 8),
-                      // Habilidades
                       Text(
                         "Habilidades: ${pokemon['habilidades'].toString().replaceAll(',', ', ')}",
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 16),
-                      // Estatísticas
                       const Text(
                         "Estatísticas:",
                         style: TextStyle(
@@ -168,23 +180,23 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Column(
+                      Row(
                         children: estatisticas.entries.map((entry) {
                           return Text(
                             "${entry.key}: ${entry.value}",
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           );
                         }).toList(),
                       ),
                       const SizedBox(height: 16),
-                      // Botão para remover dos favoritos
                       Align(
                         alignment: Alignment.centerRight,
                         child: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () async {
                             await _dbHelper.deletePokemon(pokemon['id']);
-                            setState(() {}); // Atualiza a lista após remover
+                            setState(() {});
                           },
                         ),
                       ),
